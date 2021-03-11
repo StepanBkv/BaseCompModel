@@ -154,6 +154,7 @@ plt.plot(list_x, list_y, 'D')
 legend.append("Данные")
 plt.legend(legend, loc="upper left")
 plt.grid()
+plt.savefig('data_1.png', dpi=50)
 plt.show()
 # n = int(input("Введите количество точек: "))
 # list_x = [i for i in range(1, n + 1)]
