@@ -3,18 +3,22 @@ import random
 import matplotlib.pyplot as plt
 import matplotlib.mlab as mlab
 import numpy as np
+import numpy
+import math
 
 
-def equality(first, second):
-    return first == second
+def formula(x):
+    return x ** 2 + 2 * x + 3
 
 
-def is_sublist(first, second):
-    for i in range(len(first)):
-        if first[i] == second[0]:
-            if all([first[i + j] == second[j] for j in range(1, len(second))]):
-                return True
-    return False
-
-
-print(is_sublist([1, 2, 3, 1, 2, 3, 4, 5], [1, 2, 3, 4]))
+n = 5000000
+b = 5
+a = 0
+# x = random.randint(0, 5)
+# y = random.randint(0, 5)
+# k = x + (y - x) * n
+# t = {j: {random.randint(x, y): random.randint(x, y)} for j in range(n)}
+# print(t)
+random_list = [i / 10000000.0 for i in range(0, 50000000, 1)]
+square = ((b - a) / n) * sum([formula(random.choice(random_list)) for i in range(n)])
+print(square)
