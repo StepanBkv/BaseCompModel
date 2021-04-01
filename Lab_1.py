@@ -78,7 +78,7 @@ def degree_fun(list_x, list_y, plt, legend):
     if determine != 0:
         a = determ2([[sum_x_y, sum_x], [sum_y, line]]) / determine
         b = math.exp(round(determ2([[sum_x_2, sum_x_y], [sum_x, sum_y]]) / determine, 4))
-        y = [b * pow(a, i) for i in list_x]  # f(x[i])
+        y = [b * i**a for i in list_x]  # f(x[i])
         s = [(list_y[i] - y[i]) ** 2 for i in range(line)]  # (log(y[i]) - f(x[i])) ** 2
         S = round(sum(s), 3)
         legend.append(f"Степеная функция S = {S}")
@@ -97,11 +97,14 @@ def exp_fun(list_x, list_y, plt, legend):
     determine = determ2([[sum_x_2, sum_x], [sum_x, line]])
     if determine != 0:
         a = round(determ2([[sum_x_y, sum_x], [sum_y, line]]) / determine, 4)
+
         b = math.exp(round(determ2([[sum_x_2, sum_x_y], [sum_x, sum_y]]) / determine, 4))
 
-        y = [b * pow(math.exp(1), a * i) for i in list_x]  # f(x[i])
+        y = [b * math.exp(a * i) for i in list_x]  # f(x[i])
         s = [(list_y[i] - y[i]) ** 2 for i in range(line)]  # (log(y[i]) - f(x[i])) ** 2
+
         S = round(sum(s), 3)
+
         legend.append(f"Показательная функция S = {S}")
         plt.plot(list_x, y, linewidth=2)
         return S
@@ -142,10 +145,11 @@ plt.title("Least squares method")
 plt.xlabel("X")
 plt.ylabel("Y")
 plt.autoscale(tight=True)
-n = int(input("Введите количество точек: "))
+n = 6
 legend = []
 list_x = [i for i in range(1, n + 1)]
-list_y = list(map(float, input("Введите значение вектора y: ").split()))
+list_y = list(map(float, (1, 1.5, 3, 4.5, 7, 8.5)))
+# list(map(float, input("Введите значение вектора y: ").split()))
 line_fun(list_x, list_y, plt, legend)
 degree_fun(list_x, list_y, plt, legend)
 exp_fun(list_x, list_y, plt, legend)
