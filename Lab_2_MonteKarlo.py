@@ -128,14 +128,58 @@ def circle(r, n):
     plt.plot([r, -r], [r, r])
     plt.plot([r, r], [-r, r])
     t = {j: (random.uniform(-2.0, 2.0), random.uniform(-2.0, 2.0)) for j in range(n)}
-    got = [[t[key][0], t[key][1]] for key in t if ((t[key][0]) + r) ** 2 - (t[key][1] - r) ** 2 < r ** 2]
-    dot_got = [[t[key][0], t[key][1]] for key in t if ((t[key][0]) + r) ** 2 - ((t[key][1] - r) ** 2) > r ** 2]
-    print("got: ", got)
+    got = [[t[key][0], t[key][1]] for key in t if ((t[key][0])) ** 2 + (t[key][1]) ** 2 <= r ** 2]
+    dot_got = [[t[key][0], t[key][1]] for key in t if (abs(t[key][0])) ** 2 + (abs(t[key][1])) ** 2 > r ** 2]
+
     plt.scatter([key[0] for key in got], [key[1] for key in got], s=5, c="blue")
-    plt.scatter([key[0] for key in dot_got], [key[1] for key in dot_got], s=5, c="green")
+    plt.scatter([key[0] for key in dot_got], [key[1] for key in dot_got], s=5, c="brown")
+    print(f" PI : {(len(got) / (len(dot_got) + len(got))) * 4}")
+    plt.grid()
+    # plt.show()
+
+
+def formul_p(x, a=23, b=19):
+    return math.sqrt(abs(a * math.cos(x) + b * math.sin(x)))
+
+
+def formula_p_sin(x, a, b):
+    return formul_p(x, a, b) * math.sin(x)
+
+
+def formula_p_cos(x, a, b):
+    return formul_p(x, a, b) * math.cos(x)
+
+
+def figur(n, a, b):
+    plt.figure(figsize=(12, 8))
+    plt.title("Monte - Karlo")
+    plt.xlabel("X")
+    plt.ylabel("Y")
+    plt.autoscale(tight=False)
+    legend = []
+    pi_list = [i / 100.0 for i in range(int(2 * math.pi * 100))]
+    x = [formul_p(i, a, b) * math.cos(i) for i in pi_list]
+    y = [formul_p(i, a, b) * math.sin(i) for i in pi_list]
+    plt.plot(x, y)
+    min_x = min(x)
+    max_x = max(x)
+    min_y = min(y)
+    max_y = max(y)
+    plt.plot([min_x, max_x, max_x, min_x, min_x], [min_y, min_y, max_y, max_y, min_y])
+    t = {j: (formula_p_cos(random.uniform(0, 2 * math.pi), a, b), formula_p_sin(random.uniform(0, 2 * math.pi), a, b))
+         for j in range(n)}
+    got = [[t[key][0], t[key][1]] for key in t if
+           (math.sqrt(t[key][0] ** 2 + t[key][1] ** 2)) < formul_p(numpy.arctan(t[key][1] / t[key][0]), a, b)]
+    dot_got = [[t[key][0], t[key][1]] for key in t if
+               (math.sqrt(t[key][0] ** 2 + t[key][1] ** 2)) >= formul_p(numpy.arctan(t[key][1] / t[key][0]), a, b)]
+    plt.scatter([key[0] for key in got], [key[1] for key in got], s=5, c="blue")
+    plt.scatter([key[0] for key in dot_got], [key[1] for key in dot_got], s=5, c="brown")
+    legend.append("Фигура")
+    legend.append(
+        f"Площадь S: {round(len(got) / ((len(got)) + len(dot_got)) * (abs(max_x - min_x)) * abs(max_y - min_y), 3)}")
+    plt.legend(legend, loc="upper left")
     plt.grid()
     plt.show()
 
 
-
-circle(2, 100)
+figur(1000000, 13, 9)
