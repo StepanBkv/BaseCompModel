@@ -20,7 +20,7 @@ def opredel_integral(a, b, n):
     plt.legend(legend, loc="upper left")
     plt.grid()
     plt.show()
-    return ((b - a) / n) * sum([formula(random.uniform(float(a), float(b))) for i in range(n)])
+    print (((b - a) / int(n)) * sum([formula(random.uniform(float(a), float(b))) for i in range(int(n))]))
 
 
 def monte_karlo_1(n=1000):
@@ -122,7 +122,7 @@ def circle(n, r):
     plt.plot([-r, r], [-r, -r])
     plt.plot([r, -r], [r, r])
     plt.plot([r, r], [-r, r])
-    t = {j: (random.uniform(-2.0, 2.0), random.uniform(-2.0, 2.0)) for j in range(n)}
+    t = {j: (random.uniform(-r, r), random.uniform(-r, r)) for j in range(n)}
     got = [[t[key][0], t[key][1]] for key in t if ((t[key][0])) ** 2 + (t[key][1]) ** 2 <= r ** 2]
     dot_got = [[t[key][0], t[key][1]] for key in t if (t[key][0]) ** 2 + (t[key][1]) ** 2 > r ** 2]
 
@@ -130,7 +130,7 @@ def circle(n, r):
     plt.scatter([key[0] for key in dot_got], [key[1] for key in dot_got], s=5, c="brown")
     print(f" PI : {(len(got) / (len(dot_got) + len(got))) * 4}")
     plt.grid()
-    # plt.show()
+    plt.show()
 
 
 def formul_p(x, a=23, b=19):
@@ -175,6 +175,28 @@ def figur(n, a, b):
     plt.legend(legend, loc="upper left")
     plt.grid()
     plt.show()
+
+
+n = input("Введите кол-во точек для подсчёта определённого интеграла: ")
+opredel_integral(0, 10, int(n))
+n = input("Введите кол-во точек для вывода 2.1 задания: ")
+monte_karlo_1(int(n))
+n = input("Введите кол-во точек для вывода 2.2 задания: ")
+monte_karlo_2(int(n))
+n = input("Введите кол-во точек для вывода 3 задания: ")
+r = input("И введите радиус: ")
+circle(int(n), int(r))
+n = input("Введите кол-во точек для вывода 4 задания: ")
+figur(int(n), 12, 8)
+
+
+
+
+
+
+
+
+
 
 
 
