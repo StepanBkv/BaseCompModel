@@ -1,6 +1,5 @@
 import random
 import matplotlib.pyplot as plt
-import matplotlib.mlab as mlab
 import numpy
 import math
 
@@ -24,7 +23,7 @@ def random_def_1(n=10000):
         y_1 = formula(y) % 1
         y = y_1
         y_list.append(y)
-    plt.plot([x for x in range(n+1)], y_list)
+    plt.plot([x for x in range(n + 1)], y_list)
     plt.legend(legend, loc="upper left")
     plt.grid()
     plt.show()
@@ -44,20 +43,23 @@ def rand_num_Neiman(n=5):
     for i in range(n):
         y = ((y ** 2) // 10 ** 2) % 10 ** 4
         y_list.append(y / (10 ** 4))
-    plt.plot([x for x in range(n+1)], y_list)
+    plt.plot([x for x in range(n + 1)], y_list)
     plt.legend(legend, loc="upper left")
     plt.grid()
     plt.show()
 
-def random_def_4(n=100):
+
+def multi_kong_met(n=100):
     m_1 = 1357
-    m_l = [m_1/1000]
+    m_l = [m_1 / 10000]
     for i in range(n):
-        m_1 = ((1357 * m_1) / 5689)
-        m_l.append(m_1 / 1000)
+        m_1 = ((1357 * m_1) % 56899)
+        m_l.append(m_1 / 10000)
+    print(m_l)
     plt.plot([x for x in range(n + 1)], m_l)
     plt.legend(legend, loc="upper left")
     plt.grid()
     plt.show()
 
-random_def_4(10)
+
+random_def_2(10000)
