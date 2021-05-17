@@ -5,9 +5,18 @@ import numpy
 import math
 
 
-def formula(x):
+def function(x):
     return math.sqrt(29 - math.cos(x) ** 2)
 
+def trapezoid_rule(func, a, b, nseg):
+    """Правило трапеций
+       nseg - число отрезков, на которые разбивается [a;b]"""
+    dx = 1.0 * (b - a) / nseg
+    sum = 0.5 * (func(a) + func(b))
+    for i in range(1, nseg):
+        sum += func(a + i * dx)
+
+    return sum * dx
 
 def opredel_integral(a, b, n):
     plt.figure(figsize=(12, 8))
@@ -16,27 +25,36 @@ def opredel_integral(a, b, n):
     plt.ylabel("Y")
     plt.autoscale(tight=True)
     legend = []
-    plt.plot([formula(i) for i in range(b)], [i for i in range(b)])
+    x = []
+    y = []
+    for i in range(n):
+        rand = random.uniform(float(a), float(b))
+        x += [rand]
+        y += [function(rand)]
+    x_list = [(i / 10.0) for i in range(a, b * 10)]
+    legend += [f"Площадь: {((b - a) / n) * sum(y)}, Аналитический метод: {trapezoid_rule(function, a, b, n)}"]
+    plt.plot([i for i in x_list], [function(i) for i in x_list])
+    plt.scatter(x, y, s=5, c="green")
     plt.legend(legend, loc="upper left")
     plt.grid()
     plt.show()
-    print (((b - a) / int(n)) * sum([formula(random.uniform(float(a), float(b))) for i in range(int(n))]))
 
 
 def monte_karlo_1(n=1000):
+    a = 20
+    b = 10
     x = [i / 100.0 for i in range(0, 2000)]
     # y = [(lambda x: 10 * x / 2 if 0 <= x < 2 else 10 * ((x - 20) / -18) if 2 <= x < 20 else 0)(random.uniform(0, 10))
     #      for i in range(n)]
-    y = [10 * x[i] / 2 if 0 <= x[i] < 2 else 10 * ((x[i] - 20) / -18) if 2 <= x[i] < 20 else 0 for i in
+    y = [b * x[i] / 2 if 0 <= x[i] < 2 else b * ((x[i] - a) / -18) if 2 <= x[i] < b else 0 for i in
          range(0, 2000)]
-    t = {i: (random.uniform(0.0, 20.0), random.uniform(0.0, 10.0)) for i in range(n)}
+    t = {i: (random.uniform(0.0, float(a)), random.uniform(0.0, float(b))) for i in range(n)}
     got = [[t[key][0], t[key][1]] for key in t if
-           ((0 <= t[key][0] < 2) and (t[key][1] < (10 * t[key][0]) / 2)) or (
-                   (2 <= t[key][0] < 20) and (t[key][1] < 10 * (t[key][0] - 20) / -18))]
+           ((0 <= t[key][0] < 2) and (t[key][1] < (b * t[key][0]) / 2)) or (
+                   (2 <= t[key][0] < a) and (t[key][1] < b * (t[key][0] - a) / -18))]
     not_got = [[t[key][0], t[key][1]] for key in t if
-               ((0 < t[key][0] <= 2) and (t[key][1] >= (10 * t[key][0]) / 2)) or (
-                       (2 < t[key][0] <= 20) and (t[key][1] >= 10 * (t[key][0] - 20) / -18))]
-    print(not_got)
+               ((0 < t[key][0] <= 2) and (t[key][1] >= (b * t[key][0]) / 2)) or (
+                       (2 < t[key][0] <= a) and (t[key][1] >= b * (t[key][0] - a) / -18))]
     plt.figure(figsize=(12, 8))
     plt.title("Monte - Karlo")
     plt.xlabel("X")
@@ -48,10 +66,12 @@ def monte_karlo_1(n=1000):
     plt.scatter([key[0] for key in not_got], [key[1] for key in not_got], s=5, c="red")
     plt.plot(x, y)  # график пересекающихся функций
     legend.append("Случайные точки")
+    f = (len(got) / (len(got) + len(not_got))) * 20 * 10
+    s = (a * b) / 2
     # вывод площади треугольника с помощью двух методов Монте - Карло
     legend.append(
-        f"Площадь треугольника S = {(len(got) / (len(got) + len(not_got))) * 20 * 10} |"
-        f" {(20 / n) * sum([y[i] for i in range(n)])}")
+        f"Площадь треугольника S = Метод Монте-Карло: {f}, Аналитический метод: {s}, Абсолютная погрешность: {f - s}, "
+        f"Относительная Погрешность: {round((abs((s - f) / f) * 100), 2)}%")
     # вывод...
     # ограничивающие линии
     plt.plot([0, 20], [10, 10])
@@ -82,12 +102,13 @@ def monte_karlo_2(n=100, a=36, b=18):
 
     legend.append("Случайные точки")
     f = (len(got) / (len(got) + len(dot_got))) * a * b
-    print(len(got) / len(got) + len(dot_got))
     s = (a * b) / 2
 
-    legend.append(f"Площадь треугольника S = {f}, {s}, Погрешность:{abs(s - f) / f}")
-    plt.scatter([key[0] for key in got], [key[1] for key in got], s=5, c="blue")
-    plt.scatter([key[0] for key in dot_got], [key[1] for key in dot_got], s=5, c="green")
+    legend.append(
+        f"Площадь треугольника S =  Монте - Карло {f}, Аналитический метод: {s}, Абсолютная погрешность: {f - s},"
+        f"Относительная Погрешность: {round((abs((s - f) / f) * 100), 2)}%")
+    plt.scatter([key[0] for key in got], [key[1] for key in got], s=5, c="green")
+    plt.scatter([key[0] for key in dot_got], [key[1] for key in dot_got], s=5, c="red")
     plt.plot(random_list, def_1)
     plt.plot(random_list, def_2)
     print(f"Дисперсия X: {numpy.nanmean([t[key][0] for key in t])}",
@@ -112,12 +133,11 @@ def circle(n, r):
     plt.title("Monte - Karlo")
     plt.xlabel("X")
     plt.ylabel("Y")
-    plt.autoscale(tight=False)
+    plt.autoscale(tight=True)
     legend = []
     circle_list = [x / 10.0 for x in range(r * 100)]
     plt.plot([r * math.cos(x) for x in circle_list], [r * math.sin(x) for x in circle_list])
     legend.append("Круг")
-    plt.legend(legend, loc="upper left")
     plt.plot([-r, -r], [-r, r])
     plt.plot([-r, r], [-r, -r])
     plt.plot([r, -r], [r, r])
@@ -125,10 +145,11 @@ def circle(n, r):
     t = {j: (random.uniform(-r, r), random.uniform(-r, r)) for j in range(n)}
     got = [[t[key][0], t[key][1]] for key in t if ((t[key][0])) ** 2 + (t[key][1]) ** 2 <= r ** 2]
     dot_got = [[t[key][0], t[key][1]] for key in t if (t[key][0]) ** 2 + (t[key][1]) ** 2 > r ** 2]
-
-    plt.scatter([key[0] for key in got], [key[1] for key in got], s=5, c="blue")
-    plt.scatter([key[0] for key in dot_got], [key[1] for key in dot_got], s=5, c="brown")
-    print(f" PI : {(len(got) / (len(dot_got) + len(got))) * 4}")
+    plt.scatter([key[0] for key in got], [key[1] for key in got], s=5, c="green")
+    plt.scatter([key[0] for key in dot_got], [key[1] for key in dot_got], s=5, c="red")
+    legend.append(f" PI : {(len(got) / (len(dot_got) + len(got))) * 4}")
+    plt.legend(legend, loc="upper left")
+    plt.tight_layout()
     plt.grid()
     plt.show()
 
@@ -167,12 +188,13 @@ def figur(n, a, b):
            (math.sqrt(t[key][0] ** 2 + t[key][1] ** 2)) < formul_p(numpy.arctan(t[key][1] / t[key][0]), a, b)]
     dot_got = [[t[key][0], t[key][1]] for key in t if
                (math.sqrt(t[key][0] ** 2 + t[key][1] ** 2)) >= formul_p(numpy.arctan(t[key][1] / t[key][0]), a, b)]
-    plt.scatter([key[0] for key in got], [key[1] for key in got], s=5, c="blue")
-    plt.scatter([key[0] for key in dot_got], [key[1] for key in dot_got], s=5, c="brown")
+    plt.scatter([key[0] for key in got], [key[1] for key in got], s=5, c="green")
+    plt.scatter([key[0] for key in dot_got], [key[1] for key in dot_got], s=5, c="red")
     legend.append("Фигура")
     legend.append(
         f"Площадь S: {round(len(got) / ((len(got)) + len(dot_got)) * (abs(max_x - min_x)) * abs(max_y - min_y), 3)}")
     plt.legend(legend, loc="upper left")
+    plt.tight_layout()
     plt.grid()
     plt.show()
 
@@ -188,15 +210,3 @@ r = input("И введите радиус: ")
 circle(int(n), int(r))
 n = input("Введите кол-во точек для вывода 4 задания: ")
 figur(int(n), 12, 8)
-
-
-
-
-
-
-
-
-
-
-
-
