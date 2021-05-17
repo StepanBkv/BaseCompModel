@@ -16,7 +16,7 @@ def opredel_integral(a, b, n):
     plt.ylabel("Y")
     plt.autoscale(tight=True)
     legend = []
-    plt.plot([formula(i) for i in range(b)], [i for i in range(b)])
+    plt.plot( [i for i in range(b)], [formula(i) for i in range(b)])
     plt.legend(legend, loc="upper left")
     plt.grid()
     plt.show()
@@ -36,7 +36,6 @@ def monte_karlo_1(n=1000):
     not_got = [[t[key][0], t[key][1]] for key in t if
                ((0 < t[key][0] <= 2) and (t[key][1] >= (10 * t[key][0]) / 2)) or (
                        (2 < t[key][0] <= 20) and (t[key][1] >= 10 * (t[key][0] - 20) / -18))]
-    print(not_got)
     plt.figure(figsize=(12, 8))
     plt.title("Monte - Karlo")
     plt.xlabel("X")
@@ -177,10 +176,10 @@ def figur(n, a, b):
     plt.show()
 
 
-n = input("Введите кол-во точек для подсчёта определённого интеграла: ")
-opredel_integral(0, 10, int(n))
-n = input("Введите кол-во точек для вывода 2.1 задания: ")
-monte_karlo_1(int(n))
+# n = input("Введите кол-во точек для подсчёта определённого интеграла: ")
+# opredel_integral(0, 10, int(n))
+# n = input("Введите кол-во точек для вывода 2.1 задания: ")
+monte_karlo_1()
 n = input("Введите кол-во точек для вывода 2.2 задания: ")
 monte_karlo_2(int(n))
 n = input("Введите кол-во точек для вывода 3 задания: ")
