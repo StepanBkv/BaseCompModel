@@ -160,7 +160,6 @@ def formul_p(x, a=23, b=19):
 
 def formula_p_sin(x, a, b):
     return formul_p(x, a, b) * math.sin(x)
-выфвфывфыаыф
 
 def formula_p_cos(x, a, b):
     return formul_p(x, a, b) * math.cos(x)
