@@ -28,6 +28,11 @@ def multi_kong_met(n=1000):
     for i in range(n):
         m_1 = ((1357 * m_1) % 5689)
         data.append(m_1 / 10000)
+        print(data)
+    # plt.hist(data)
+    # plt.legend(legend, loc="upper left")
+    # plt.grid()
+    # plt.show()
     plt.hist(data)
     plt.title("Конгуэтный Мультипликативный Метод")
     plt.legend(legend, loc="upper left")
@@ -82,6 +87,10 @@ def len_kong_met(n=1999):
     plt.grid()
     plt.show()
 
+
+def random_def_2(n=100):
+    y = [((2 ** 30) * x / (n * 10)) % 1 for x in range(1, n)]
+    plt.hist(y)
 def rand(n):
     data = [random.random() for i in range(n)]
     print(data)
@@ -93,6 +102,16 @@ def rand(n):
     plt.show()
 
 
+# n = input("Введите кол-во случайных чисел для 1 метода: ")
+# random_def_1(int(n))
+# n = input("Введите кол-во случайных чисел для 2 метода: ")
+# random_def_2(int(n))
+# n = input("Введите кол-во случайных чисел для метода Неймана: ")
+# rand_num_Neiman(int(n))
+# n = input("Введите кол-во случайных чисел для мультипликативного конгруэнтного метода: ")
+# multi_kong_met(int(n))
+# реализация первых 4 методов практики.
+multi_kong_met(100)
 
 n = input("Введите кол-во случайных чисел для Метода Неймана: ")
 rand_num_Neiman(int(n))
